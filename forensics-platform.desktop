@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Forensics Platform
+GenericName=Digital Forensics & Secure Sanitization Suite
+Comment=Integrated Secure Data Sanitization & Digital Forensics Platform
+Exec=python3 -m forensics_platform
+Icon=utilities-terminal
+Terminal=false
+Categories=System;Security;Forensics;Utility;
+Keywords=forensics;sanitization;recovery;carving;audit;nist;shred;evidence;
+StartupNotify=true
+StartupWMClass=forensics_platform

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title|default("Case Summary Report") }}</title>
+    <style>
+{{ inline_css }}
+    </style>
+</head>
+<body>
+<div class="report-container">
+    <!-- Header -->
+    <div class="report-header">
+        <div class="report-brand">
+            <div class="report-title">FORENSIC CASE SUMMARY REPORT</div>
+            <div class="report-subtitle">Comprehensive Investigation Registry & Evidence Dossier</div>
+        </div>
+        <div class="report-meta-badge">
+            <div class="badge-id">Case: {{ case.case_number }}</div>
+            <div>Generated: {{ generated_at|date }}</div>
+            <div>Examiner: {{ generated_by }}</div>
+        </div>
+    </div>
+
+    <!-- Case Metrics -->
+    <div class="stats-row">
+        <div class="stat-card highlight">
+            <div class="stat-value">{{ evidence_items|length }}</div>
+            <div class="stat-label">Evidence Items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total_evidence_size|bytes }}</div>
+            <div class="stat-label">Total Data Size</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ operations|length }}</div>
+            <div class="stat-label">Operations</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total_recovered_files }}</div>
+            <div class="stat-label">Files Carved/Recovered</div>
+        </div>
+    </div>
+
+    <!-- Case Dossier Details -->
+    <div class="section">
+        <div class="section-title">1. Case Metadata & Authorization</div>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Case Number</span>
+                <span class="detail-value mono">{{ case.case_number }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Title</span>
+                <span class="detail-value">{{ case.title }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Lead Investigator</span>
+                <span class="detail-value">{{ case.investigator }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Department / Agency</span>
+                <span class="detail-value">{{ case.organization|default("N/A") }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Case Status</span>
+                <span class="detail-value">{{ case.status|pill }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Date Opened</span>
+                <span class="detail-value">{{ case.created_at|date }}</span>
+            </div>
+        </div>
+        {% if case.description %}
+        <div class="detail-item" style="margin-top: 8px;">
+            <span class="detail-label">Case Description & Notes</span>
+            <span class="detail-value" style="font-size: 12px; font-weight: normal; color: var(--text-secondary);">{{ case.description }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Evidence Inventory -->
+    <div class="section">
+        <div class="section-title">2. Evidence Custody Inventory ({{ evidence_items|length }} items)</div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 35px;">#</th>
+                    <th>Evidence ID</th>
+                    <th>Label</th>
+                    <th>Type</th>
+                    <th>Size</th>
+                    <th>SHA-256 Hash</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in evidence_items %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td class="mono" style="font-weight: 600;">{{ item.evidence_number }}</td>
+                    <td>{{ item.device_model|default(item.evidence_number) }}</td>
+                    <td>{{ item.source_type|upper }}</td>
+                    <td>{{ item.capacity|bytes }}</td>
+                    <td class="mono" style="font-size: 10px;">{{ item.sha256|hash(16) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Operations History -->
+    <div class="section">
+        <div class="section-title">3. Operations & Forensic Analysis Log ({{ operations|length }} executions)</div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 45px;">Op ID</th>
+                    <th>Operation Type</th>
+                    <th>Tool</th>
+                    <th>Status</th>
+                    <th>Started</th>
+                    <th>Completed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for op in operations %}
+                <tr>
+                    <td class="mono">#{{ op.id }}</td>
+                    <td>{{ op.operation_type|upper }}</td>
+                    <td>{{ op.tool_version|default("Platform Engine") }}</td>
+                    <td>{{ op.status|pill }}</td>
+                    <td>{{ op.start_time|date }}</td>
+                    <td>{{ op.end_time|date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Hash Integrity Seal -->
+    <div class="integrity-seal">
+        <div class="integrity-seal-title">
+            <span>🛡️</span> Cryptographic Case Attestation
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 11px;">
+            <div><strong>Report SHA-256:</strong> <span class="mono">{{ report_hash|default("HASH_PENDING") }}</span></div>
+            <div><strong>Platform Version:</strong> <span class="mono">1.0.0</span></div>
+        </div>
+    </div>
+
+    <!-- Signatures -->
+    <div class="signature-grid">
+        <div class="signature-box">
+            <div class="signature-name">{{ generated_by }}</div>
+            <div class="signature-title">Lead Investigator / Case Manager</div>
+        </div>
+        <div class="signature-box">
+            <div class="signature-name">{{ case.organization|default("Digital Forensics Unit") }}</div>
+            <div class="signature-title">Forensic Laboratory Director</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

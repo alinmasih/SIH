@@ -1,0 +1,13 @@
+{
+  "name": "Graphics Interchange Format",
+  "file_type": "gif",
+  "extensions": ["gif"],
+  "mime_type": "image/gif",
+  "header_hex": "47494638",
+  "header_offset": 0,
+  "footer_hex": "3B",
+  "max_size": 52428800,
+  "min_size": 32,
+  "sector_aligned": true,
+  "validator": "gif"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "ZIP Archive",
+  "file_type": "zip",
+  "extensions": ["zip"],
+  "mime_type": "application/zip",
+  "header_hex": "504B0304",
+  "header_offset": 0,
+  "footer_hex": "504B0506",
+  "max_size": 104857600,
+  "min_size": 22,
+  "sector_aligned": true,
+  "validator": "zip"
+}

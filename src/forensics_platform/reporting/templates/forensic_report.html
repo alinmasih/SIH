@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title|default("Forensic Investigation Report") }}</title>
+    <style>
+{{ inline_css }}
+    </style>
+</head>
+<body>
+<div class="report-container">
+    <!-- Header -->
+    <div class="report-header">
+        <div class="report-brand">
+            <div class="report-title">DIGITAL FORENSICS INVESTIGATION REPORT</div>
+            <div class="report-subtitle">Official Forensic Artifact Analysis & Evidence Recovery Report</div>
+        </div>
+        <div class="report-meta-badge">
+            <div class="badge-id">Report ID: #{{ report_id|default("REP-DRAFT") }}</div>
+            <div>Generated: {{ generated_at|date }}</div>
+            <div>Investigator: {{ generated_by }}</div>
+        </div>
+    </div>
+
+    <!-- KPI Stats Cards -->
+    <div class="stats-row">
+        <div class="stat-card highlight">
+            <div class="stat-value">{{ stats.total_files }}</div>
+            <div class="stat-label">Files Recovered</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total_bytes|bytes }}</div>
+            <div class="stat-label">Total Volume</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.valid_files }}</div>
+            <div class="stat-label">Valid Signatures</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.avg_confidence }}%</div>
+            <div class="stat-label">Avg Confidence</div>
+        </div>
+    </div>
+
+    <!-- Case Information -->
+    <div class="section">
+        <div class="section-title">1. Case Overview</div>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Case Number</span>
+                <span class="detail-value mono">{{ case.case_number }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Case Title</span>
+                <span class="detail-value">{{ case.title }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Lead Investigator</span>
+                <span class="detail-value">{{ case.investigator }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Organization</span>
+                <span class="detail-value">{{ case.organization|default("N/A") }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Status</span>
+                <span class="detail-value">{{ case.status|pill }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Created Date</span>
+                <span class="detail-value">{{ case.created_at|date }}</span>
+            </div>
+        </div>
+        {% if case.description %}
+        <div class="detail-item" style="margin-top: 8px;">
+            <span class="detail-label">Description / Scope</span>
+            <span class="detail-value" style="font-size: 12px; font-weight: normal; color: var(--text-secondary);">{{ case.description }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Evidence Item Details -->
+    {% if evidence %}
+    <div class="section">
+        <div class="section-title">2. Target Evidence Source</div>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Evidence Number</span>
+                <span class="detail-value mono">{{ evidence.evidence_number }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Evidence Model / Label</span>
+                <span class="detail-value">{{ evidence.device_model|default("Evidence Device") }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Source Type</span>
+                <span class="detail-value">{{ evidence.source_type|upper }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Capacity</span>
+                <span class="detail-value">{{ evidence.capacity|bytes }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">SHA-256 Hash</span>
+                <span class="detail-value mono" style="font-size: 11px;">{{ evidence.sha256 }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">MD5 Hash</span>
+                <span class="detail-value mono" style="font-size: 11px;">{{ evidence.md5|default("N/A") }}</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Operation Information -->
+    {% if operation %}
+    <div class="section">
+        <div class="section-title">3. Forensic Operation Details</div>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Operation ID</span>
+                <span class="detail-value mono">#{{ operation.id }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Operation Type</span>
+                <span class="detail-value">{{ operation.operation_type|upper }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Execution Status</span>
+                <span class="detail-value">{{ operation.status|pill }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Execution Tool</span>
+                <span class="detail-value">{{ operation.tool_version|default("SleuthKit / Carving Engine") }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Started At</span>
+                <span class="detail-value">{{ operation.start_time|date }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Completed At</span>
+                <span class="detail-value">{{ operation.end_time|date }}</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Recovered Artifacts Table -->
+    <div class="section">
+        <div class="section-title">4. Recovered Forensic Artifacts ({{ files|length }} items)</div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 35px;">#</th>
+                    <th>Filename</th>
+                    <th>Type</th>
+                    <th style="width: 75px;">Size</th>
+                    <th style="width: 80px;">Status</th>
+                    <th style="width: 80px;">Confidence</th>
+                    <th style="width: 140px;">SHA-256</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td class="mono" style="font-weight: 600;">{{ file.filename }}</td>
+                    <td>{{ file.detected_type|upper }}</td>
+                    <td>{{ file.size|bytes }}</td>
+                    <td>{{ file.validation_status|pill }}</td>
+                    <td>
+                        {% if file.confidence_score %}
+                        <strong>{{ file.confidence_score }}%</strong>
+                        {% else %}
+                        <span style="color: var(--text-muted);">N/A</span>
+                        {% endif %}
+                    </td>
+                    <td class="mono" style="font-size: 10px;">{{ file.sha256|hash(14) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Cryptographic Hash & Chain of Custody Integrity -->
+    <div class="integrity-seal">
+        <div class="integrity-seal-title">
+            <span>🛡️</span> Cryptographic Chain of Custody & Hash Seal
+        </div>
+        <p style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">
+            This report represents an immutable record generated from validated database artifacts. All recovered file hashes, evidence checksums, and examiner actions are linked to the tamper-evident SHA-256 audit chain.
+        </p>
+        <div style="display: flex; justify-content: space-between; font-size: 11px;">
+            <div><strong>Report Fingerprint (SHA-256):</strong> <span class="mono">{{ report_hash|default("COMPUTING_ON_EXPORT") }}</span></div>
+            <div><strong>Audit Link ID:</strong> <span class="mono">#{{ audit_event_id|default("N/A") }}</span></div>
+        </div>
+    </div>
+
+    <!-- Investigator Signatures -->
+    <div class="signature-grid">
+        <div class="signature-box">
+            <div class="signature-name">{{ generated_by }}</div>
+            <div class="signature-title">Forensic Examiner / Investigator</div>
+        </div>
+        <div class="signature-box">
+            <div class="signature-name">{{ case.organization|default("Digital Forensics Laboratory") }}</div>
+            <div class="signature-title">Reviewing Authority / Supervisor</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

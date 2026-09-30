@@ -1,0 +1,444 @@
+Metadata-Version: 2.4
+Name: forensics-platform
+Version: 1.0.0
+Summary: Integrated Secure Data Sanitization & Digital Forensics Platform
+Author: Research Team
+Project-URL: Documentation, https://github.com/yourusername/forensics-platform
+Project-URL: Source, https://github.com/yourusername/forensics-platform
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Security
+Classifier: Topic :: System :: Filesystems
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: PySide6>=6.6.0
+Requires-Dist: SQLAlchemy>=2.0.0
+Requires-Dist: python-magic>=0.4.27
+Requires-Dist: Pillow>=10.0.0
+Requires-Dist: pypdf>=3.17.0
+Requires-Dist: cryptography>=41.0.0
+Requires-Dist: psutil>=5.9.0
+Requires-Dist: PyYAML>=6.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: pytest-qt>=4.2.0; extra == "dev"
+Requires-Dist: pylint>=3.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: mypy>=1.5.0; extra == "dev"
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Integrated Secure Data Sanitization & Digital Forensics Platform
+
+**Version:** 1.0.0-alpha  
+**Status:** Phase 1 Complete - Foundation Ready  
+**License:** MIT  
+**Date:** 2026-09-08
+
+---
+
+## 🎯 Project Overview
+
+An academic/research prototype combining two critical cybersecurity capabilities:
+
+### 🔐 Secure Data Sanitization
+- Drive and file erasure with verification
+- Device-specific sanitization strategies
+- Multi-layer safety confirmations
+- Simulation mode for safe testing
+
+### 🔍 Digital Forensics
+- Case and evidence management
+- Advanced file carving and recovery
+- Deleted file analysis
+- Tamper-evident audit logging
+- Professional forensic reporting
+
+---
+
+## ⚠️ Important Safety Notice
+
+This software includes **destructive operations**. Always:
+- ✓ Verify target devices carefully
+- ✓ Use simulation mode for testing (default: ON)
+- ✓ Read safety documentation before use
+- ✓ Test on disposable media first
+
+**Simulation mode is ON by default** to prevent accidental data loss.
+
+---
+
+## 🏗️ Architecture
+
+### Modular Design
+- **9 independent modules** with clean interfaces
+- **7 database tables** with full relationships
+- **Tamper-evident audit logging** via hash chains
+- **Type-safe Python** with comprehensive documentation
+
+### Technology Stack
+- **Backend:** Python 3.12+
+- **GUI:** PySide6 (Qt)
+- **Database:** SQLite + SQLAlchemy
+- **External:** The Sleuth Kit integration
+
+---
+
+## 📊 Current Status
+
+### ✅ Phase 1: Foundation (COMPLETE)
+- [x] Project structure and configuration
+- [x] Core utilities (hashing, logging)
+- [x] Database schema and ORM models
+- [x] Tamper-evident audit system
+- [x] Application controller
+- [x] Unit tests (30+ test cases)
+
+**Lines of Code:** ~3,000+  
+**Test Coverage:** Core modules tested  
+**Documentation:** Complete API documentation
+
+### 🚧 In Development
+- [ ] Phase 2: GUI Shell & Dashboard
+- [ ] Phase 3: Case & Evidence Management
+- [ ] Phase 4: Forensic Analysis Engine
+- [ ] Phase 5: File Carving Engine
+- [ ] Phase 6: Sanitization Engine
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Linux (Ubuntu 22.04+ / Debian 12+)
+- Python 3.12+
+- The Sleuth Kit (optional, for filesystem analysis)
+
+```bash
+# Install system dependencies (Ubuntu/Debian)
+sudo apt update
+sudo apt install python3.12 python3-venv python3-pip
+sudo apt install sleuthkit  # Optional
+```
+
+### Installation
+
+```bash
+# 1. Clone or navigate to project directory
+cd /path/to/forensics-platform
+
+# 2. Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 3. Install dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+
+# 4. Install package in development mode
+pip install -e .
+```
+
+### Verify Installation
+
+```bash
+# Run verification script
+python scripts/verify_phase1.py
+
+# Run unit tests
+pytest tests/unit/ -v
+
+# Check code quality
+black --check src/
+pylint src/forensics_platform/
+```
+
+---
+
+## 📖 Documentation
+
+### Planning Documents
+- [ARCHITECTURE.md](ARCHITECTURE.md) - System architecture and design
+- [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) - Complete database design
+- [DEVELOPMENT_PHASES.md](DEVELOPMENT_PHASES.md) - 16-week development plan
+- [TECHNOLOGY_STACK.md](TECHNOLOGY_STACK.md) - APIs and technology decisions
+- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) - File organization
+- [OPEN_SOURCE_ANALYSIS.md](OPEN_SOURCE_ANALYSIS.md) - Dependencies and licenses
+- [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) - Executive summary
+
+### Status Documents
+- [PHASE1_COMPLETE.md](PHASE1_COMPLETE.md) - Phase 1 completion report
+- [README_PLANNING.md](README_PLANNING.md) - Planning documents index
+
+---
+
+## 🧪 Testing
+
+### Run All Tests
+```bash
+pytest tests/ -v
+```
+
+### Run Specific Test Modules
+```bash
+pytest tests/unit/test_hashing.py -v
+pytest tests/unit/test_config.py -v
+pytest tests/unit/test_database.py -v
+```
+
+### Test Coverage
+```bash
+pytest --cov=src/forensics_platform tests/
+```
+
+### Verify Phase 1
+```bash
+python scripts/verify_phase1.py
+```
+
+---
+
+## 🔧 Development
+
+### Code Style
+
+```bash
+# Format code
+black src/ tests/
+
+# Lint code
+pylint src/forensics_platform/
+
+# Type checking
+mypy src/
+```
+
+### Project Structure
+
+```
+forensics-platform/
+├── src/forensics_platform/     # Source code
+│   ├── core/                   # Core system
+│   ├── utils/                  # Utilities
+│   ├── database/               # Database layer
+│   ├── audit/                  # Audit system
+│   ├── gui/                    # GUI (Phase 2)
+│   ├── forensics/              # Forensics engine
+│   ├── carving/                # File carving
+│   ├── sanitization/           # Sanitization
+│   └── reporting/              # Reports
+├── tests/                      # Test suite
+├── data/                       # Configuration data
+├── docs/                       # Documentation
+└── scripts/                    # Utility scripts
+```
+
+---
+
+## 🔐 Security & Safety
+
+### Safety Features
+- ✅ Simulation mode ON by default
+- ✅ Multiple confirmation requirements
+- ✅ System disk detection
+- ✅ Tamper-evident audit logging
+- ✅ All operations logged
+
+### Security Considerations
+- Parameterized SQL queries (SQLAlchemy)
+- No shell command injection (subprocess with lists)
+- Input validation at boundaries
+- Secure hash algorithms (SHA-256)
+
+---
+
+## 📝 License & Attribution
+
+### Project License
+MIT License - See LICENSE file
+
+### Third-Party Components
+See [THIRD_PARTY.md](THIRD_PARTY.md) for complete attribution.
+
+**Key Dependencies:**
+- PySide6 (LGPL v3) - GUI framework
+- SQLAlchemy (MIT) - Database ORM
+- The Sleuth Kit (CPL 1.0) - Filesystem analysis (external)
+
+---
+
+## 🎓 Academic Use
+
+This is an **academic/research prototype** designed for:
+- Education and training
+- Forensics research
+- Security testing in controlled environments
+- Understanding forensic and sanitization techniques
+
+### Limitations
+- Not production-grade forensic software
+- SSD sanitization requires hardware support
+- Recovery success depends on many factors
+- All limitations clearly documented
+
+---
+
+## 🤝 Contributing
+
+### Development Workflow
+1. Create feature branch
+2. Implement feature following coding standards
+3. Write tests (aim for >80% coverage)
+4. Update documentation
+5. Run tests and linters
+6. Submit for review
+
+### Coding Standards
+- Follow PEP 8
+- Use type hints
+- Document all public APIs
+- Write unit tests for new code
+- Keep functions focused and testable
+
+---
+
+## 📋 Roadmap
+
+### Phase 1: Foundation ✅ (Complete)
+- Configuration system
+- Database layer
+- Audit logging
+- Core utilities
+
+### Phase 2: GUI Shell (Next)
+- Main window
+- Dashboard
+- Navigation
+- Common widgets
+
+### Phase 3: Case Management
+- Case CRUD operations
+- Evidence registration
+- Integrity verification
+
+### Phase 4: Forensic Analysis
+- Filesystem analysis
+- Deleted file recovery
+- The Sleuth Kit integration
+
+### Phase 5: File Carving
+- Signature-based carving
+- Structure validation
+- Confidence scoring
+
+### Phase 6: Sanitization
+- Device detection
+- Safe sanitization
+- Verification
+
+### Phase 7: Reporting
+- HTML/PDF generation
+- Forensic reports
+- Sanitization reports
+
+---
+
+## 🐛 Known Issues
+
+- None currently (Phase 1 only)
+
+---
+
+## 📞 Support
+
+### Documentation
+See the `docs/` directory for complete documentation.
+
+### Questions
+For academic/research questions, refer to the planning documents.
+
+---
+
+## 🙏 Acknowledgments
+
+### Inspiration & Reference
+- **The Sleuth Kit** - Filesystem analysis methodology
+- **Autopsy** - Case management concepts
+- **PhotoRec** - File carving algorithms
+- **nwipe** - Sanitization workflow
+
+See [OPEN_SOURCE_ANALYSIS.md](OPEN_SOURCE_ANALYSIS.md) for complete attribution.
+
+---
+
+## 📊 Statistics
+
+- **Planning Documents:** 8 documents (~70,000 words)
+- **Source Files:** 30+ files
+- **Lines of Code:** 3,000+ lines
+- **Database Tables:** 7 tables
+- **Test Cases:** 30+ tests
+- **Development Time:** Phase 1 complete
+
+---
+
+## 🚀 Getting Started
+
+### For Users
+1. Read [INSTALLATION.md](docs/INSTALLATION.md) (coming in Phase 2)
+2. Follow Quick Start above
+3. Review safety guidelines
+
+### For Developers
+1. Read [ARCHITECTURE.md](ARCHITECTURE.md)
+2. Review [DEVELOPMENT_PHASES.md](DEVELOPMENT_PHASES.md)
+3. Set up development environment
+4. Start with Phase 2 implementation
+
+### For Researchers
+1. Review all planning documents
+2. Study the architecture
+3. Examine database schema
+4. Understand limitations
+
+---
+
+## ⚡ Quick Commands
+
+```bash
+# Setup
+python3 -m venv venv && source venv/bin/activate
+pip install -e . -r requirements.txt -r requirements-dev.txt
+
+# Test
+pytest tests/ -v
+
+# Verify
+python scripts/verify_phase1.py
+
+# Format
+black src/ tests/
+
+# Lint
+pylint src/forensics_platform/
+```
+
+---
+
+**Status:** Phase 1 Complete ✓  
+**Ready for:** Phase 2 - GUI Development  
+**Last Updated:** 2026-09-08
+

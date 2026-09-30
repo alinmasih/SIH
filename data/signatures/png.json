@@ -1,0 +1,13 @@
+{
+  "name": "Portable Network Graphics",
+  "file_type": "png",
+  "extensions": ["png"],
+  "mime_type": "image/png",
+  "header_hex": "89504E470D0A1A0A",
+  "header_offset": 0,
+  "footer_hex": "49454E44AE426082",
+  "max_size": 52428800,
+  "min_size": 64,
+  "sector_aligned": true,
+  "validator": "png"
+}

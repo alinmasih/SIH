@@ -1,0 +1,2 @@
+[console_scripts]
+forensics-platform = forensics_platform.__main__:main

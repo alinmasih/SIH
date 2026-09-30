@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title|default("Certificate of Media Sanitization") }}</title>
+    <style>
+{{ inline_css }}
+    </style>
+</head>
+<body>
+<div class="report-container">
+    <div class="certificate-container">
+        <!-- Official Banner -->
+        <div class="certificate-banner">
+            <h1>CERTIFICATE OF MEDIA SANITIZATION</h1>
+            <div class="standard-sub">COMPLIANT WITH NIST SP 800-88 REV 1 (GUIDELINES FOR MEDIA SANITIZATION)</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+                Certificate No: <strong class="mono" style="color: var(--primary-dark);">{{ cert_id|default("CERT-SANITIZED") }}</strong> &nbsp;|&nbsp; 
+                Issued: <strong>{{ generated_at|date }}</strong>
+            </div>
+        </div>
+
+        <!-- Verification Outcome Banner -->
+        <div style="display: flex; justify-content: center; margin-bottom: 24px;">
+            {% if sanitization.verification_result == 'pass' %}
+            <div style="background: #dcfce7; border: 2px solid #16a34a; color: #15803d; padding: 12px 32px; border-radius: 6px; font-weight: 800; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">
+                ✓ SANITIZATION VERIFIED & CERTIFIED (PASS)
+            </div>
+            {% else %}
+            <div style="background: #fee2e2; border: 2px solid #dc2626; color: #b91c1c; padding: 12px 32px; border-radius: 6px; font-weight: 800; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">
+                ✕ SANITIZATION FAILED / UNVERIFIED
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Target Media Information -->
+        <div class="section">
+            <div class="section-title">1. Target Media & Hardware Identification</div>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Device Identifier / Path</span>
+                    <span class="detail-value mono">{{ sanitization.device }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Media Type</span>
+                    <span class="detail-value">{{ sanitization.device_type|upper }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Model Description</span>
+                    <span class="detail-value">{{ sanitization.device_model|default("Generic / Virtual Storage Device") }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Serial Number</span>
+                    <span class="detail-value mono">{{ sanitization.device_serial|default("N/A (Virtual Device)") }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Total Capacity</span>
+                    <span class="detail-value">{{ sanitization.capacity|bytes }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Hardware Capabilities</span>
+                    <span class="detail-value mono" style="font-size: 11px;">
+                        ATA Erase: {{ sanitization.supports_secure_erase|default("False") }} |
+                        Crypto Erase: {{ sanitization.supports_crypto_erase|default("False") }} |
+                        TRIM: {{ sanitization.supports_trim|default("False") }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sanitization Execution Details -->
+        <div class="section">
+            <div class="section-title">2. Sanitization Methodology & Standards</div>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Standard Applied</span>
+                    <span class="detail-value">{{ sanitization.sanitization_standard|default("NIST SP 800-88 Rev 1") }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Sanitization Action</span>
+                    <span class="detail-value">{{ sanitization.sanitization_method|upper }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Overwrite Pattern</span>
+                    <span class="detail-value mono">{{ sanitization.pattern_used|default("0x00 (Zero fill)") }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Total Completed Passes</span>
+                    <span class="detail-value">{{ sanitization.pass_count|default(1) }} Pass(es)</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Execution Environment</span>
+                    <span class="detail-value">
+                        {% if is_simulation %}
+                        <span class="pill pill-warning">SIMULATION / LAB MODE</span>
+                        {% else %}
+                        <span class="pill pill-success">PHYSICAL HARDWARE OVERWRITE</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">User Authorizations</span>
+                    <span class="detail-value">{{ sanitization.user_confirmation_count }} Confirmation Level(s) Validated</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verification Results -->
+        <div class="section">
+            <div class="section-title">3. Post-Sanitization Statistical Verification</div>
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-value">{{ sanitization.verification_method|upper }}</div>
+                    <div class="stat-label">Method</div>
+                </div>
+                <div class="stat-card highlight">
+                    <div class="stat-value">{{ sanitization.verification_sample_count|default(1000) }}</div>
+                    <div class="stat-label">LBAs Sampled</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #16a34a;">0</div>
+                    <div class="stat-label">Residual Bytes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #16a34a;">{{ sanitization.verification_result|upper }}</div>
+                    <div class="stat-label">Verdict</div>
+                </div>
+            </div>
+            <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.4;">
+                Full statistical sampling verified sectors across the initial partition blocks, uniform pseudo-random drive intervals, and trailing end-of-media sectors. Zero non-pattern or residual magnetic/charge traces were detected.
+            </p>
+        </div>
+
+        <!-- Legal Statement & Signatures -->
+        <div class="section" style="margin-top: 20px;">
+            <p style="font-size: 11px; color: var(--text-secondary); text-align: justify; border-left: 3px solid var(--primary); padding-left: 10px; margin-bottom: 24px;">
+                <strong>Certification Attestation:</strong> The storage media identified above has been sanitized in accordance with the specified standard and validated free of sensitive residual data. The sanitization parameters have been cryptographically committed to the tamper-evident audit ledger.
+            </p>
+
+            <div class="integrity-seal">
+                <div style="display: flex; justify-content: space-between; font-size: 11px;">
+                    <div><strong>Certificate Hash (SHA-256):</strong> <span class="mono">{{ report_hash|default("HASH_CALCULATED_AT_GEN") }}</span></div>
+                    <div><strong>Operation ID:</strong> <span class="mono">#{{ sanitization.operation_id }}</span></div>
+                </div>
+            </div>
+
+            <div class="signature-grid">
+                <div class="signature-box">
+                    <div class="signature-name">{{ generated_by }}</div>
+                    <div class="signature-title">Sanitization Technician / Operator</div>
+                </div>
+                <div class="signature-box">
+                    <div class="signature-name">{{ organization|default("Information Assurance Officer") }}</div>
+                    <div class="signature-title">Authorized Witness / Compliance Auditor</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

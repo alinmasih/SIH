@@ -1,0 +1,13 @@
+{
+  "name": "Portable Document Format",
+  "file_type": "pdf",
+  "extensions": ["pdf"],
+  "mime_type": "application/pdf",
+  "header_hex": "25504446",
+  "header_offset": 0,
+  "footer_hex": "2525454F46",
+  "max_size": 104857600,
+  "min_size": 64,
+  "sector_aligned": true,
+  "validator": "pdf"
+}

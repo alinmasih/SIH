@@ -1,0 +1,13 @@
+{
+  "name": "JPEG Image",
+  "file_type": "jpeg",
+  "extensions": ["jpg", "jpeg"],
+  "mime_type": "image/jpeg",
+  "header_hex": "FFD8FF",
+  "header_offset": 0,
+  "footer_hex": "FFD9",
+  "max_size": 52428800,
+  "min_size": 128,
+  "sector_aligned": true,
+  "validator": "jpeg"
+}

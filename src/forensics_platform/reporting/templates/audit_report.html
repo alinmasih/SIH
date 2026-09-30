@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title|default("Audit Trail & Chain of Custody Report") }}</title>
+    <style>
+{{ inline_css }}
+    </style>
+</head>
+<body>
+<div class="report-container">
+    <!-- Header -->
+    <div class="report-header">
+        <div class="report-brand">
+            <div class="report-title">AUDIT TRAIL & CHAIN OF CUSTODY REPORT</div>
+            <div class="report-subtitle">Cryptographic Tamper-Evident Ledger of Investigative Operations</div>
+        </div>
+        <div class="report-meta-badge">
+            <div class="badge-id">Scope: {{ scope_name|default("Platform Global") }}</div>
+            <div>Generated: {{ generated_at|date }}</div>
+            <div>Auditor: {{ generated_by }}</div>
+        </div>
+    </div>
+
+    <!-- Chain Status Metric Cards -->
+    <div class="stats-row">
+        <div class="stat-card highlight">
+            <div class="stat-value">{{ events|length }}</div>
+            <div class="stat-label">Total Logged Events</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" style="color: #16a34a;">{{ verified_count }}</div>
+            <div class="stat-label">Verified Links</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" style="color: {% if broken_count > 0 %}#dc2626{% else %}#16a34a{% endif %};">
+                {{ broken_count }}
+            </div>
+            <div class="stat-label">Broken Links</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">
+                {% if chain_valid %}
+                <span class="pill pill-success" style="font-size: 14px;">VALID</span>
+                {% else %}
+                <span class="pill pill-danger" style="font-size: 14px;">COMPROMISED</span>
+                {% endif %}
+            </div>
+            <div class="stat-label">Chain Integrity</div>
+        </div>
+    </div>
+
+    <!-- Audit Event Log Table -->
+    <div class="section">
+        <div class="section-title">1. Chronological Event Ledger ({{ events|length }} events)</div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 40px;">ID</th>
+                    <th style="width: 130px;">Timestamp</th>
+                    <th style="width: 80px;">User</th>
+                    <th style="width: 130px;">Event Action</th>
+                    <th>Details</th>
+                    <th style="width: 100px;">Prev Hash</th>
+                    <th style="width: 100px;">Event Hash</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ev in events %}
+                <tr>
+                    <td class="mono">#{{ ev.id }}</td>
+                    <td style="font-size: 11px;">{{ ev.timestamp|date }}</td>
+                    <td><strong>{{ ev.user }}</strong></td>
+                    <td>{{ ev.event_type|upper }}</td>
+                    <td style="font-size: 11px;">{{ ev.details|default("—") }}</td>
+                    <td class="mono" style="font-size: 10px;">{{ ev.previous_hash|hash(10) }}</td>
+                    <td class="mono" style="font-size: 10px;">{{ ev.current_hash|hash(10) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tamper-Evident Cryptographic Seal -->
+    <div class="integrity-seal">
+        <div class="integrity-seal-title">
+            <span>🛡️</span> Cryptographic Hash-Chain Verification Certificate
+        </div>
+        <p style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px;">
+            Every audit event entry contains the SHA-256 digest of the immediately preceding event record, creating a forward-secure, unbroken cryptographic chain. Any unauthorized modification, deletion, or backdating recalculates an invalid signature.
+        </p>
+        <div style="display: flex; justify-content: space-between; font-size: 11px;">
+            <div><strong>Chain Verification:</strong> 
+                {% if chain_valid %}
+                <strong style="color: #16a34a;">UNBROKEN & VERIFIED (0 Tampering Detected)</strong>
+                {% else %}
+                <strong style="color: #dc2626;">CHAIN DISCONTINUITY DETECTED</strong>
+                {% endif %}
+            </div>
+            <div><strong>Report SHA-256:</strong> <span class="mono">{{ report_hash|default("EXPORT_HASH") }}</span></div>
+        </div>
+    </div>
+
+    <!-- Signatures -->
+    <div class="signature-grid">
+        <div class="signature-box">
+            <div class="signature-name">{{ generated_by }}</div>
+            <div class="signature-title">System Security Officer / Compliance Examiner</div>
+        </div>
+        <div class="signature-box">
+            <div class="signature-name">Digital Forensics Platform Core v1.0.0</div>
+            <div class="signature-title">Automated Cryptographic Attestation Engine</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
